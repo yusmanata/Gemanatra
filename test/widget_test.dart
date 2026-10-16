@@ -10,7 +10,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gemanatra/main.dart';
 
 void main() {
-  testWidgets('menampilkan logo pada halaman awal', (WidgetTester tester) async {
+  testWidgets('menampilkan logo pada halaman awal', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const GemanatraApp());
 
     expect(find.text('Gemanatra'), findsOneWidget);

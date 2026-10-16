@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+
+import '../../core/themes/dimens.dart';
+
+/// Seksi pengelompokan item pengaturan.
+class SettingSection extends StatelessWidget {
+  const SettingSection({
+    super.key,
+    required this.title,
+    required this.children,
+    this.icon,
+  });
+
+  final String title;
+  final IconData? icon;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final dimens = Dimens.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Semantics(
+          header: true,
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(
+                  icon,
+                  size: dimens.iconSizeSmall + 2.0,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                SizedBox(width: dimens.spacingSmall),
+              ],
+              Text(title, style: textTheme.titleMedium),
+            ],
+          ),
+        ),
+        SizedBox(height: dimens.spacingSmall + 2.0),
+        Card(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: dimens.cardPadding,
+              vertical: dimens.spacingSmall,
+            ),
+            child: Column(
+              children: [
+                for (var i = 0; i < children.length; i++) ...[
+                  children[i],
+                  if (i < children.length - 1)
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: dimens.spacingXSmall,
+                      ),
+                      child: const Divider(),
+                    ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

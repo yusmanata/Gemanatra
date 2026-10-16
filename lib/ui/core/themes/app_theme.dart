@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 /// Tema terpusat Material 3 untuk aplikasi Gemanatra.
-/// Memusatkan Component Theme (Card, Button, Chip, AppBar, BottomNav)
+/// Memusatkan Component Theme (Card, Button, Chip, AppBar, BottomNav, Switch)
 /// dan Typography (TextTheme) sehingga widget di halaman mewarisi gaya secara konsisten.
 class AppTheme {
   AppTheme._();
@@ -21,6 +22,7 @@ class AppTheme {
         surface: AppColors.surface,
         onSurface: AppColors.textPrimary,
         outline: AppColors.border,
+        error: AppColors.error,
       ),
 
       // 2. Skala Tipografi Terpusat (TextTheme)
@@ -81,7 +83,7 @@ class AppTheme {
         iconTheme: IconThemeData(color: AppColors.textPrimary),
       ),
 
-      // 4. Card Theme (Menggantikan Container berulang)
+      // 4. Card Theme (Komponen Kartu Berbingkai Bersih)
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,
@@ -110,7 +112,23 @@ class AppTheme {
         ),
       ),
 
-      // 6. Chip Theme (Kategori Berita)
+      // 6. Outlined Button Theme
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.textPrimary,
+          minimumSize: const Size.fromHeight(48.0),
+          side: const BorderSide(color: AppColors.border, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+
+      // 7. Chip Theme (Kategori Berita)
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surface,
         selectedColor: AppColors.primary,
@@ -126,7 +144,7 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       ),
 
-      // 7. Bottom Navigation Bar Theme (Navigasi Bawah)
+      // 8. Bottom Navigation Bar Theme (Navigasi Bawah)
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.navBackground,
         elevation: 0,
@@ -136,17 +154,31 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           fontSize: 12.0,
         ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 12.0,
-        ),
+        unselectedLabelStyle: TextStyle(fontSize: 12.0),
         type: BottomNavigationBarType.fixed,
       ),
 
-      // 8. Divider Theme (Pemisah Garis Halus)
+      // 9. Divider Theme (Pemisah Garis Halus)
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         thickness: 1.0,
         space: 1.0,
+      ),
+
+      // 10. Switch Theme
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.onPrimary;
+          }
+          return AppColors.textSecondary;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primary;
+          }
+          return AppColors.border;
+        }),
       ),
     );
   }
