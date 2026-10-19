@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/themes/app_colors.dart';
 import '../../core/themes/dimens.dart';
 
-/// Komponen pemilih kategori berita horizontal.
-/// Didesain dengan touch target yang nyaman dan semantik status terpilih.
 class CategoryChips extends StatelessWidget {
   const CategoryChips({
     super.key,
@@ -28,7 +27,7 @@ class CategoryChips extends StatelessWidget {
           header: true,
           child: Text('Kategori Berita', style: textTheme.titleMedium),
         ),
-        SizedBox(height: dimens.spacingSmall + 2.0),
+        SizedBox(height: dimens.spacingMediumSmall),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -48,10 +47,10 @@ class CategoryChips extends StatelessWidget {
                     onSelected: (_) => onSelected(index),
                     label: Text(categoryName),
                     avatar: isSelected
-                        ? const Icon(
+                        ? Icon(
                             Icons.check,
-                            size: 16.0,
-                            color: Colors.black,
+                            size: dimens.iconSizeSmall,
+                            color: AppColors.onPrimary,
                           )
                         : null,
                   ),

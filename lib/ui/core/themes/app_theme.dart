@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'dimens.dart';
 
 /// Tema terpusat Material 3 untuk aplikasi Gemanatra.
-/// Memusatkan Component Theme (Card, Button, Chip, AppBar, BottomNav, Switch)
-/// dan Typography (TextTheme) sehingga widget di halaman mewarisi gaya secara konsisten.
+/// Menggunakan token dari Dimens dan AppColors secara terpadu tanpa duplikasi nilai.
 class AppTheme {
   AppTheme._();
 
   static ThemeData get lightTheme {
+    const dimens = Dimens.standard;
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.background,
 
-      // 1. Color Scheme Dasar (Design Tokens to Theme)
+      // 1. Color Scheme Dasar
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: AppColors.onPrimary,
@@ -41,17 +43,32 @@ class AppTheme {
           color: AppColors.textPrimary,
           letterSpacing: -0.5,
         ),
-        // Untuk subjudul seksi (Kategori Berita, Berita Utama, Judul Artikel)
+        // Untuk subjudul seksi & judul artikel
         titleMedium: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
           color: AppColors.textPrimary,
+          height: 1.35,
+        ),
+        // Untuk judul ubin pengaturan (SettingTile)
+        titleSmall: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+        ),
+        // Untuk isi paragraf berita lengkap (Detail Berita)
+        bodyLarge: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.normal,
+          color: AppColors.textPrimary,
+          height: 1.6,
         ),
         // Untuk teks informasi sekunder (kelembapan, waktu, lokasi)
         bodyMedium: TextStyle(
           fontSize: 13.0,
           fontWeight: FontWeight.w500,
           color: AppColors.textSecondary,
+          height: 1.4,
         ),
         // Untuk label tombol dan chip
         labelLarge: TextStyle(
@@ -74,7 +91,7 @@ class AppTheme {
         ),
       ),
 
-      // 3. AppBar Theme (Header Atas Bersih)
+      // 3. AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -83,26 +100,26 @@ class AppTheme {
         iconTheme: IconThemeData(color: AppColors.textPrimary),
       ),
 
-      // 4. Card Theme (Komponen Kartu Berbingkai Bersih)
+      // 4. Card Theme (menggunakan token Dimens.borderRadiusLarge)
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(dimens.borderRadiusLarge),
           side: const BorderSide(color: AppColors.border, width: 1.0),
         ),
       ),
 
-      // 5. Elevated Button Theme (Tombol Masif Ramah Tunanetra)
+      // 5. Elevated Button Theme (menggunakan token Dimens.borderRadiusStandard)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           elevation: 0,
-          minimumSize: const Size.fromHeight(50.0),
+          minimumSize: Size.fromHeight(dimens.buttonHeight),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(dimens.borderRadiusStandard),
           ),
           textStyle: const TextStyle(
             fontSize: 15.0,
@@ -116,10 +133,10 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.textPrimary,
-          minimumSize: const Size.fromHeight(48.0),
+          minimumSize: Size.fromHeight(dimens.minTouchTarget),
           side: const BorderSide(color: AppColors.border, width: 1.5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(dimens.borderRadiusStandard),
           ),
           textStyle: const TextStyle(
             fontSize: 14.0,
@@ -128,7 +145,7 @@ class AppTheme {
         ),
       ),
 
-      // 7. Chip Theme (Kategori Berita)
+      // 7. Chip Theme (menggunakan token Dimens.borderRadiusMedium)
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surface,
         selectedColor: AppColors.primary,
@@ -139,12 +156,15 @@ class AppTheme {
         ),
         side: const BorderSide(color: AppColors.border),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(dimens.borderRadiusMedium),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: dimens.chipPaddingHorizontal,
+          vertical: dimens.chipPaddingVertical,
+        ),
       ),
 
-      // 8. Bottom Navigation Bar Theme (Navigasi Bawah)
+      // 8. Bottom Navigation Bar Theme
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.navBackground,
         elevation: 0,
@@ -158,7 +178,7 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
 
-      // 9. Divider Theme (Pemisah Garis Halus)
+      // 9. Divider Theme
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         thickness: 1.0,

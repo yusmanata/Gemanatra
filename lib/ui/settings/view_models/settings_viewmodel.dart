@@ -2,8 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
-/// ViewModel untuk layar Pengaturan (Settings).
-/// Mengelola preferensi aksesibilitas suara (TTS), tampilan, dan konfigurasi cuaca.
 class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel({
     String initialSpeechRate = 'Normal (1.0x)',

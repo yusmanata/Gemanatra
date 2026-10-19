@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/themes/dimens.dart';
 
-/// Seksi pengelompokan item pengaturan.
 class SettingSection extends StatelessWidget {
   const SettingSection({
     super.key,
@@ -30,16 +29,22 @@ class SettingSection extends StatelessWidget {
               if (icon != null) ...[
                 Icon(
                   icon,
-                  size: dimens.iconSizeSmall + 2.0,
+                  size: dimens.iconSizeMediumSmall,
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 SizedBox(width: dimens.spacingSmall),
               ],
-              Text(title, style: textTheme.titleMedium),
+              Expanded(
+                child: Text(
+                  title,
+                  style: textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: dimens.spacingSmall + 2.0),
+        SizedBox(height: dimens.spacingMediumSmall),
         Card(
           child: Padding(
             padding: EdgeInsets.symmetric(

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/dimens.dart';
 
-/// Tampilan ketika daftar favorit masih kosong.
-/// Mengutamakan kejelasan teks dan semantik ramah tunanetra.
 class FavoriteEmptyView extends StatelessWidget {
   const FavoriteEmptyView({super.key});
 
@@ -18,20 +16,20 @@ class FavoriteEmptyView extends StatelessWidget {
       label: 'Halaman berita favorit masih kosong. Anda belum menyimpan berita apapun.',
       child: Center(
         child: Padding(
-          padding: EdgeInsets.all(dimens.cardPadding * 1.5),
+          padding: EdgeInsets.all(dimens.emptyStatePadding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 80.0,
-                height: 80.0,
+                width: dimens.emptyStateContainerSize,
+                height: dimens.emptyStateContainerSize,
                 decoration: const BoxDecoration(
                   color: AppColors.surface,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.bookmark_border_rounded,
-                  size: 40.0,
+                  size: dimens.iconSizeXLarge,
                   color: AppColors.textSecondary,
                 ),
               ),
@@ -44,7 +42,7 @@ class FavoriteEmptyView extends StatelessWidget {
               SizedBox(height: dimens.spacingSmall),
               Text(
                 'Simpan berita penting dengan menekan ikon simpan agar dapat Anda dengarkan kembali dengan mudah kapan saja.',
-                style: textTheme.bodyMedium?.copyWith(height: 1.4),
+                style: textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
             ],

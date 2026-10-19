@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gemanatra/domain/models/news_item.dart';
+import 'package:gemanatra/data/repositories/news/news_repository_local.dart';
 import 'package:gemanatra/main.dart';
 import 'package:gemanatra/ui/favorite/view_models/favorite_viewmodel.dart';
 import 'package:gemanatra/ui/home/view_models/home_viewmodel.dart';
 import 'package:gemanatra/ui/main/view_models/main_navigation_viewmodel.dart';
+import 'package:gemanatra/ui/news_detail/view_models/news_detail_viewmodel.dart';
 import 'package:gemanatra/ui/settings/view_models/settings_viewmodel.dart';
 
 void main() {
@@ -19,63 +22,62 @@ void main() {
       expect(vm.currentIndex, 1);
       expect(notified, isTrue);
 
-      // memilih tab yang sama tidak memicu notification ulang
       notified = false;
       vm.selectTab(1);
       expect(notified, isFalse);
     });
   });
 
-  group('HomeViewModel Test', () {
-    test('memiliki data awal cuaca dan kategori', () {
-      final vm = HomeViewModel();
-      expect(vm.weather.location, 'DKI Jakarta');
-      expect(vm.categories.length, greaterThan(0));
-      expect(vm.selectedCategoryIndex, 0);
-      expect(vm.filteredNews.length, greaterThan(0));
+  group('NewsRepository & ViewModel Synchronization Test', () {
+    late NewsRepositoryLocal repository;
+    late HomeViewModel homeVm;
+    late FavoriteViewModel favoriteVm;
+
+    setUp(() {
+      repository = NewsRepositoryLocal();
+      homeVm = HomeViewModel(repository: repository);
+      favoriteVm = FavoriteViewModel(repository: repository);
     });
 
-    test('dapat memfilter berita berdasarkan kategori', () {
-      final vm = HomeViewModel();
-      vm.selectCategory(1); // Nasional
-      expect(vm.selectedCategoryIndex, 1);
-      for (final news in vm.filteredNews) {
+    tearDown(() {
+      homeVm.dispose();
+      favoriteVm.dispose();
+      repository.dispose();
+    });
+
+    test(
+      'HomeViewModel dan FavoriteViewModel tersinkronisasi via Repository',
+      () {
+        // 1. Cek data awal
+        expect(homeVm.filteredNews.length, 4);
+        final initialFavoriteCount = favoriteVm.count;
+        expect(initialFavoriteCount, 2); // id 2 dan id 4 adalah favorit
+
+        // 2. Tambah favorit dari Beranda (id 1)
+        expect(favoriteVm.favorites.any((item) => item.id == '1'), isFalse);
+        homeVm.toggleFavorite('1');
+
+        // Harus otomatis muncul di tab Favorit
+        expect(favoriteVm.count, initialFavoriteCount + 1);
+        expect(favoriteVm.favorites.any((item) => item.id == '1'), isTrue);
+
+        // 3. Hapus favorit dari tab Favorit (id 2)
+        favoriteVm.removeFavorite('2');
+
+        // Tanda favorit di Beranda untuk id 2 harus otomatis tercabut
+        final news2InHome = homeVm.filteredNews.firstWhere(
+          (item) => item.id == '2',
+        );
+        expect(news2InHome.isFavorite, isFalse);
+      },
+    );
+
+    test('HomeViewModel memfilter berita berdasarkan kategori', () {
+      homeVm.selectCategory(1); // Nasional
+      expect(homeVm.selectedCategoryIndex, 1);
+      for (final news in homeVm.filteredNews) {
         expect(news.category.toLowerCase(), 'nasional');
       }
-    });
-
-    test('dapat mengubah status bookmark favorit berita', () {
-      final vm = HomeViewModel();
-      final initialFavorite = vm.filteredNews.first.isFavorite;
-      final targetId = vm.filteredNews.first.id;
-
-      vm.toggleFavorite(targetId);
-      final updated = vm.filteredNews.firstWhere((n) => n.id == targetId);
-      expect(updated.isFavorite, !initialFavorite);
-    });
-  });
-
-  group('FavoriteViewModel Test', () {
-    test('dapat menghapus dan menambahkan berita favorit', () {
-      final vm = FavoriteViewModel();
-      final initialCount = vm.count;
-      expect(initialCount, greaterThan(0));
-
-      final firstId = vm.favorites.first.id;
-      vm.removeFavorite(firstId);
-      expect(vm.count, initialCount - 1);
-      expect(vm.favorites.any((n) => n.id == firstId), isFalse);
-
-      vm.addFavorite(
-        const NewsItem(
-          id: '99',
-          category: 'Umum',
-          title: 'Berita Baru',
-          timeAgo: 'Baru saja',
-          durationText: '1 Menit',
-        ),
-      );
-      expect(vm.favorites.any((n) => n.id == '99'), isTrue);
     });
   });
 
@@ -116,6 +118,154 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Aksesibilitas & Preferensi'), findsOneWidget);
       expect(find.text('Aksesibilitas Suara (TTS)'), findsOneWidget);
+    });
+
+    testWidgets(
+      'layout aman saat layar diperkecil atau diperlebar tanpa overflow',
+      (WidgetTester tester) async {
+        // 1. Uji layar kecil / sempit (320x568 dp)
+        tester.view.physicalSize = const Size(320, 568);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(const GemanatraApp());
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Buka Favorit di layar kecil
+        await tester.tap(find.text('Favorit'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Buka Pengaturan di layar kecil
+        await tester.tap(find.text('Pengaturan'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // 2. Uji layar lebar / tablet (1200x800 dp)
+        tester.view.physicalSize = const Size(1200, 800);
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Kembali ke Utama di layar lebar
+        await tester.tap(find.text('Utama'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'FavoriteScreen konten berada di atas layar (tidak di tengah secara vertikal)',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(400, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(const GemanatraApp());
+        await tester.pumpAndSettle();
+
+        // Pindah ke tab Favorit
+        await tester.tap(find.text('Favorit'));
+        await tester.pumpAndSettle();
+
+        // Temukan teks jumlah berita tersimpan
+        final headerFinder = find.text('2 Berita Tersimpan');
+        expect(headerFinder, findsOneWidget);
+
+        // Ambil posisi Y dari teks tersebut
+        final topPosition = tester.getTopLeft(headerFinder).dy;
+
+        // Header harus berada di area atas (di bawah AppBar sekitar ~70-100dp),
+        // bukan di tengah layar (> 250dp).
+        expect(topPosition, lessThan(150.0));
+      },
+    );
+
+    testWidgets(
+      'Mengetuk kartu berita membuka NewsDetailScreen dan menampilkan isi lengkap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(const GemanatraApp());
+        await tester.pumpAndSettle();
+
+        // Cari kartu berita pertama
+        final cardTitleFinder = find.text(
+          'Inovasi Navigasi Suara untuk Disabilitas Netra Resmi Diluncurkan',
+        );
+        expect(cardTitleFinder, findsOneWidget);
+
+        // Ketuk kartu berita
+        await tester.tap(cardTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Verifikasi kita berada di Halaman Detail Berita
+        expect(find.text('Detail Berita'), findsOneWidget);
+        expect(find.text('Dengarkan Versi Suara'), findsOneWidget);
+        expect(find.textContaining('Tim Teknologi Gemanatra'), findsOneWidget);
+        expect(
+          find.textContaining('Sebuah terobosan baru dalam teknologi asistif'),
+          findsOneWidget,
+        );
+
+        // Uji tombol putar suara narasi
+        final playButton = find.text('Dengarkan Sekarang (2 Menit)');
+        expect(playButton, findsOneWidget);
+        await tester.tap(playButton);
+        await tester.pumpAndSettle();
+        expect(find.text('Sedang Membacakan Berita...'), findsOneWidget);
+
+        // Uji tombol kembali
+        await tester.tap(find.byTooltip('Kembali'));
+        await tester.pumpAndSettle();
+
+        // Kembali ke halaman utama
+        expect(find.text('Gemanatra'), findsOneWidget);
+      },
+    );
+  });
+
+  group('NewsDetailViewModel Test', () {
+    late NewsRepositoryLocal repository;
+    late NewsDetailViewModel detailVm;
+
+    setUp(() {
+      repository = NewsRepositoryLocal();
+      detailVm = NewsDetailViewModel(repository: repository, newsId: '1');
+    });
+
+    tearDown(() {
+      detailVm.dispose();
+      repository.dispose();
+    });
+
+    test('mengambil data berita dan status favorit dengan benar', () {
+      expect(detailVm.news, isNotNull);
+      expect(detailVm.news!.id, '1');
+      expect(detailVm.isFavorite, isFalse);
+      expect(detailVm.isPlayingVoice, isFalse);
+
+      // Uji pemutaran suara asistif
+      detailVm.toggleVoicePlayback();
+      expect(detailVm.isPlayingVoice, isTrue);
+
+      detailVm.toggleVoicePlayback();
+      expect(detailVm.isPlayingVoice, isFalse);
+
+      // Uji toggle favorit tersinkronisasi
+      detailVm.toggleFavorite();
+      expect(detailVm.isFavorite, isTrue);
+      expect(repository.getNewsById('1')!.isFavorite, isTrue);
+    });
+
+    test('menangani id berita tidak valid dengan aman', () {
+      final invalidVm = NewsDetailViewModel(
+        repository: repository,
+        newsId: 'nonexistent',
+      );
+      expect(invalidVm.news, isNull);
+      expect(invalidVm.isFavorite, isFalse);
+      invalidVm.dispose();
     });
   });
 }

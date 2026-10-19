@@ -6,9 +6,6 @@ import '../../home/widgets/home_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
 import '../view_models/main_navigation_viewmodel.dart';
 
-/// Shell navigasi utama aplikasi dengan BottomNavigationBar.
-/// Menggunakan IndexedStack untuk mempertahankan state masing-masing tab.
-/// Sesuai aturan AGENTS.md (StatelessWidget + ListenableBuilder).
 class MainNavigationScreen extends StatelessWidget {
   const MainNavigationScreen({
     super.key,

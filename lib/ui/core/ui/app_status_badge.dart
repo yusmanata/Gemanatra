@@ -4,7 +4,7 @@ import '../themes/app_colors.dart';
 import '../themes/dimens.dart';
 
 /// Badge indikator status TTS (Text to Speech) aktif.
-/// Dilengkapi semantik suara untuk aksesibilitas pembaca layar (TalkBack).
+/// Menggunakan token Dimens secara murni tanpa operasi aritmetika token.
 class AppStatusBadge extends StatelessWidget {
   const AppStatusBadge({
     super.key,
@@ -28,8 +28,8 @@ class AppStatusBadge extends StatelessWidget {
       readOnly: true,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: dimens.spacingSmall + 2.0,
-          vertical: dimens.spacingXSmall + 1.0,
+          horizontal: dimens.badgePaddingHorizontal,
+          vertical: dimens.badgePaddingVertical,
         ),
         decoration: BoxDecoration(
           color: bgColor,
@@ -42,9 +42,9 @@ class AppStatusBadge extends StatelessWidget {
             Icon(
               isActive ? Icons.record_voice_over : Icons.voice_over_off,
               color: fgColor,
-              size: dimens.iconSizeSmall - 2.0,
+              size: dimens.iconSizeTiny,
             ),
-            SizedBox(width: dimens.spacingXSmall + 1.0),
+            SizedBox(width: dimens.spacingXSmall),
             Text(
               label,
               style: textTheme.labelSmall?.copyWith(

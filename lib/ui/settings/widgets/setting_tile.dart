@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/themes/dimens.dart';
 
-/// Item ubin pengaturan tunggal dengan semantik aksesibilitas tinggi.
 class SettingTile extends StatelessWidget {
   const SettingTile({
     super.key,
@@ -31,13 +30,15 @@ class SettingTile extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
+              flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title,
-                    style: textTheme.titleMedium?.copyWith(fontSize: 15.0),
+                    style: textTheme.titleSmall,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if (subtitle != null) ...[
                     SizedBox(height: dimens.spacingXSmall),
@@ -48,7 +49,7 @@ class SettingTile extends StatelessWidget {
             ),
             if (trailing != null) ...[
               SizedBox(width: dimens.spacingSmall),
-              trailing!,
+              Flexible(flex: 2, child: trailing!),
             ],
           ],
         ),

@@ -7,6 +7,8 @@ class NewsItem {
     required this.title,
     required this.timeAgo,
     required this.durationText,
+    this.author = 'Redaksi Gemanatra',
+    this.content = '',
     this.isFavorite = false,
   });
 
@@ -15,6 +17,8 @@ class NewsItem {
   final String title;
   final String timeAgo;
   final String durationText;
+  final String author;
+  final String content;
   final bool isFavorite;
 
   NewsItem copyWith({
@@ -23,6 +27,8 @@ class NewsItem {
     String? title,
     String? timeAgo,
     String? durationText,
+    String? author,
+    String? content,
     bool? isFavorite,
   }) {
     return NewsItem(
@@ -31,6 +37,8 @@ class NewsItem {
       title: title ?? this.title,
       timeAgo: timeAgo ?? this.timeAgo,
       durationText: durationText ?? this.durationText,
+      author: author ?? this.author,
+      content: content ?? this.content,
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }

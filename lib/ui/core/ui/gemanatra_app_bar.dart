@@ -5,6 +5,7 @@ import '../themes/dimens.dart';
 import 'app_status_badge.dart';
 
 /// AppBar utama aplikasi Gemanatra dengan logo, judul suara, dan badge status TTS.
+/// Seluruh dimensi diambil murni dari Dimens tanpa nilai ajaib / hardcoded.
 class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GemanatraAppBar({
     super.key,
@@ -32,18 +33,18 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
             borderRadius: BorderRadius.circular(dimens.borderRadiusSmall),
             child: Image.asset(
               'assets/images/logo.jpg',
-              width: 36.0,
-              height: 36.0,
+              width: dimens.avatarSize,
+              height: dimens.avatarSize,
               fit: BoxFit.cover,
               semanticLabel: 'Logo Gemanatra',
-              errorBuilder: (_, _, _) => const Icon(
+              errorBuilder: (_, _, _) => Icon(
                 Icons.volume_up_rounded,
                 color: AppColors.primaryDark,
-                size: 32.0,
+                size: dimens.iconSizeLarge,
               ),
             ),
           ),
-          SizedBox(width: dimens.spacingSmall + 2.0),
+          SizedBox(width: dimens.spacingMediumSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

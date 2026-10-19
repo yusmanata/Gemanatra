@@ -2,56 +2,31 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
+import '../../../data/repositories/news/news_repository.dart';
 import '../../../domain/models/news_item.dart';
 import '../../../domain/models/weather_summary.dart';
 
-/// ViewModel untuk layar Beranda (Home).
-/// Mengikuti aturan AGENTS.md: memisahkan state & logic dari Widget,
-/// mengekspos data immutable, dan tidak mengimpor BuildContext.
 class HomeViewModel extends ChangeNotifier {
-  HomeViewModel({WeatherSummary? initialWeather, List<NewsItem>? initialNews})
-    : _weather =
-          initialWeather ??
-          const WeatherSummary(
-            location: 'DKI Jakarta',
-            temperature: '29°C',
-            condition: 'Cerah Berawan',
-            details: 'Kelembapan: 72% • Angin: 14 km/jam',
-          ),
-      _categories = const ['Semua', 'Nasional', 'Teknologi', 'Kesehatan'],
-      _newsList =
-          initialNews ??
-          const [
-            NewsItem(
-              id: '1',
-              category: 'Teknologi',
-              timeAgo: '15 menit lalu',
-              title: 'Inovasi Navigasi Suara untuk Disabilitas Netra Resmi Diluncurkan',
-              durationText: '2 Menit',
-              isFavorite: false,
-            ),
-            NewsItem(
-              id: '2',
-              category: 'Nasional',
-              timeAgo: '1 jam lalu',
-              title: 'Pemerintah Memperluas Fasilitas Guiding Block di Seluruh Stasiun Kereta',
-              durationText: '3 Menit',
-              isFavorite: true,
-            ),
-            NewsItem(
-              id: '3',
-              category: 'Kesehatan',
-              timeAgo: '2 jam lalu',
-              title: 'Kementerian Kesehatan Kenalkan Rekam Medis Berbantuan Suara untuk Pasien Low Vision',
-              durationText: '4 Menit',
-              isFavorite: false,
-            ),
-          ];
+  HomeViewModel({
+    required NewsRepository repository,
+    WeatherSummary? initialWeather,
+  }) : _newsRepository = repository,
+       _weather =
+           initialWeather ??
+           const WeatherSummary(
+             location: 'DKI Jakarta',
+             temperature: '29°C',
+             condition: 'Cerah Berawan',
+             details: 'Kelembapan: 72% • Angin: 14 km/jam',
+           ),
+       _categories = const ['Semua', 'Nasional', 'Teknologi', 'Kesehatan'] {
+    _newsRepository.addListener(_onRepositoryChanged);
+  }
 
+  final NewsRepository _newsRepository;
   final WeatherSummary _weather;
   final List<String> _categories;
   int _selectedCategoryIndex = 0;
-  List<NewsItem> _newsList;
 
   WeatherSummary get weather => _weather;
   UnmodifiableListView<String> get categories =>
@@ -60,11 +35,12 @@ class HomeViewModel extends ChangeNotifier {
 
   /// Daftar berita yang telah difilter sesuai kategori yang dipilih.
   UnmodifiableListView<NewsItem> get filteredNews {
+    final allNews = _newsRepository.getAllNews();
     if (_selectedCategoryIndex == 0) {
-      return UnmodifiableListView(_newsList);
+      return UnmodifiableListView(allNews);
     }
     final selectedCategory = _categories[_selectedCategoryIndex].toLowerCase();
-    final filtered = _newsList
+    final filtered = allNews
         .where((item) => item.category.toLowerCase() == selectedCategory)
         .toList();
     return UnmodifiableListView(filtered);
@@ -77,13 +53,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void toggleFavorite(String id) {
-    _newsList = _newsList.map((item) {
-      if (item.id == id) {
-        return item.copyWith(isFavorite: !item.isFavorite);
-      }
-      return item;
-    }).toList();
-    notifyListeners();
+    _newsRepository.toggleFavorite(id);
   }
 
   void playWeatherVoice() {
@@ -92,5 +62,15 @@ class HomeViewModel extends ChangeNotifier {
 
   void playNewsVoice(String id) {
     // Placeholder untuk aksi pemutaran audio berita
+  }
+
+  void _onRepositoryChanged() {
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _newsRepository.removeListener(_onRepositoryChanged);
+    super.dispose();
   }
 }

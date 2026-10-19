@@ -4,8 +4,6 @@ import '../../../domain/models/weather_summary.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/dimens.dart';
 
-/// Kartu ringkasan cuaca hari ini.
-/// Didesain dengan kontras tinggi WCAG AAA dan semantik ramah tunanetra.
 class WeatherCard extends StatelessWidget {
   const WeatherCard({
     super.key,
@@ -40,7 +38,7 @@ class WeatherCard extends StatelessWidget {
                       Icon(
                         Icons.wb_sunny_rounded,
                         color: AppColors.primaryDark,
-                        size: dimens.iconSizeSmall + 2.0,
+                        size: dimens.iconSizeMediumSmall,
                       ),
                       SizedBox(width: dimens.spacingSmall),
                       Text('CUACA HARI INI', style: textTheme.labelMedium),
@@ -58,7 +56,7 @@ class WeatherCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: dimens.spacingSmall + 2.0),
+              SizedBox(height: dimens.spacingMediumSmall),
               Row(
                 children: [
                   Text(weather.temperature, style: textTheme.displayLarge),
@@ -74,7 +72,7 @@ class WeatherCard extends StatelessWidget {
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: dimens.spacingXSmall / 2),
+                        SizedBox(height: dimens.spacingTiny),
                         Text(
                           weather.details,
                           style: textTheme.bodyMedium,
@@ -90,7 +88,7 @@ class WeatherCard extends StatelessWidget {
                 onPressed: onListenPressed,
                 icon: Icon(
                   Icons.cloud_outlined,
-                  size: dimens.iconSizeMedium + 2.0,
+                  size: dimens.iconSizeMediumLarge,
                 ),
                 label: const Text('Dengarkan Cuaca'),
               ),
