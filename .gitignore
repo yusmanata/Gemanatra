@@ -47,3 +47,7 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Dokumen pribadi
+IMPLEMENTATION_PLAN.md
+STUDY_GUIDE.md
