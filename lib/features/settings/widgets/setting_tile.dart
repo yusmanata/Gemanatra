@@ -42,7 +42,7 @@ class SettingTile extends StatelessWidget {
                   ),
                   if (subtitle != null) ...[
                     SizedBox(height: dimens.spacingXSmall),
-                    Text(subtitle!, style: textTheme.bodyMedium,),
+                    Text(subtitle!, style: textTheme.bodyMedium),
                   ],
                 ],
               ),
