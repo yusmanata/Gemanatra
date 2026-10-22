@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _selectedCategory = 0;
 
-  // shortcut: suara cuaca dan berita belum tersambung ke TTS, ganti saat TTS dibuat.
   void _playWeatherVoice() {}
 
   void _playNewsVoice(String id) {}

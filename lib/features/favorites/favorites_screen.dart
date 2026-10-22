@@ -55,7 +55,6 @@ class FavoritesScreen extends StatelessWidget {
                         NewsCard(
                           key: ValueKey(item.id),
                           news: item,
-                          // shortcut: suara berita belum tersambung ke TTS, ganti saat TTS dibuat.
                           onListen: () {},
                           onFavoriteToggle: () => news.toggleFavorite(item.id),
                           onTap: () =>

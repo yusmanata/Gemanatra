@@ -51,3 +51,4 @@ app.*.map.json
 # Dokumen pribadi
 IMPLEMENTATION_PLAN.md
 STUDY_GUIDE.md
+STUDY_LIVE_CODING.md

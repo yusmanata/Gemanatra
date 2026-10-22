@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/dimens.dart';
-import 'app_status_badge.dart';
 
-/// AppBar utama aplikasi Gemanatra dengan logo, judul suara, dan badge status TTS.
-/// Seluruh dimensi diambil murni dari Dimens tanpa nilai ajaib / hardcoded.
 class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GemanatraAppBar({
     super.key,
     this.title = 'Gemanatra',
     this.subtitle = 'Suara Berita & Cuaca',
-    this.showTtsBadge = true,
   });
 
   final String title;
   final String subtitle;
-  final bool showTtsBadge;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 1.0);
@@ -27,7 +22,9 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
     final dimens = Dimens.of(context);
 
     return AppBar(
+      centerTitle: true,
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(dimens.borderRadiusSmall),
@@ -63,17 +60,6 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ],
-      ),
-      actions: [
-        if (showTtsBadge)
-          Padding(
-            padding: EdgeInsets.only(right: dimens.paddingScreenHorizontal),
-            child: const AppStatusBadge(),
-          ),
-      ],
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(1.0),
-        child: Divider(),
       ),
     );
   }

@@ -42,14 +42,20 @@ class SettingTile extends StatelessWidget {
                   ),
                   if (subtitle != null) ...[
                     SizedBox(height: dimens.spacingXSmall),
-                    Text(subtitle!, style: textTheme.bodyMedium),
+                    Text(subtitle!, style: textTheme.bodyMedium,),
                   ],
                 ],
               ),
             ),
             if (trailing != null) ...[
               SizedBox(width: dimens.spacingSmall),
-              Flexible(flex: 2, child: trailing!),
+              Flexible(
+                flex: 2,
+                child: Align(
+                  alignment: AlignmentGeometry.centerRight,
+                  child: trailing!,
+                ),
+              ),
             ],
           ],
         ),

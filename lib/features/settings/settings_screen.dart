@@ -55,6 +55,7 @@ class SettingsScreen extends StatelessWidget {
                               items: settings.availableSpeechRates.map((rate) {
                                 return DropdownMenuItem(
                                   value: rate,
+                                  alignment: AlignmentGeometry.centerRight,
                                   child: Text(
                                     rate,
                                     overflow: TextOverflow.ellipsis,
@@ -94,7 +95,8 @@ class SettingsScreen extends StatelessWidget {
                                 'Sesuaikan skala huruf untuk kemudahan membaca',
                             trailing: DropdownButton<String>(
                               value: settings.textSize,
-                              isExpanded: true,
+                              isExpanded: false,
+                              alignment: AlignmentGeometry.centerRight,
                               underline: const SizedBox.shrink(),
                               onChanged: (value) {
                                 if (value != null) settings.setTextSize(value);

@@ -4,7 +4,6 @@ import '../../core/app_scope.dart';
 import '../../core/models/news_item.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/dimens.dart';
-import '../../core/widgets/app_status_badge.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   const NewsDetailScreen({super.key, required this.newsId});
@@ -16,7 +15,6 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
-  // shortcut: hanya menukar tampilan, belum memutar suara; ganti dengan TTS nyata.
   bool _isPlayingVoice = false;
 
   @override
@@ -71,10 +69,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         ? 'Tersimpan di Favorit'
                         : 'Simpan ke Favorit',
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 12.0),
-                  child: AppStatusBadge(),
                 ),
               ],
             ],
