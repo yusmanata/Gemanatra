@@ -95,7 +95,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 }
 
-/// Konten artikel berita lengkap beserta pemutar suara asistif.
 class _NewsDetailContent extends StatelessWidget {
   const _NewsDetailContent({
     required this.news,
@@ -143,7 +142,6 @@ class _NewsDetailContent extends StatelessWidget {
   }
 }
 
-/// Spanduk interaktif untuk memutar narasi suara berita.
 class _AudioPlaybackBanner extends StatelessWidget {
   const _AudioPlaybackBanner({
     required this.news,
@@ -237,7 +235,6 @@ class _AudioPlaybackBanner extends StatelessWidget {
   }
 }
 
-/// Bagian header artikel yang memuat kategori, tanggal terbit, penulis, dan judul.
 class _ArticleHeaderSection extends StatelessWidget {
   const _ArticleHeaderSection({required this.news});
 
@@ -287,7 +284,6 @@ class _ArticleHeaderSection extends StatelessWidget {
   }
 }
 
-/// Paragraf teks isi artikel dengan tipografi kontras tinggi.
 class _ArticleParagraphs extends StatelessWidget {
   const _ArticleParagraphs({required this.content});
 
@@ -325,7 +321,6 @@ class _ArticleParagraphs extends StatelessWidget {
   }
 }
 
-/// Tampilan fallback ketika ID berita tidak ditemukan.
 class _NewsNotFoundView extends StatelessWidget {
   const _NewsNotFoundView();
 

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
 
-/// Kerangka tab utama; isi tab dikelola go_router lewat navigationShell.
 class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.navigationShell});
 

@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import '../features/news/news_controller.dart';
 import '../features/settings/settings_controller.dart';
 
-/// Menyediakan controller lintas layar: `AppScope.of(context).news`.
 class AppScope extends InheritedWidget {
   const AppScope({
     super.key,
@@ -21,7 +20,6 @@ class AppScope extends InheritedWidget {
     return scope!;
   }
 
-  // Controller tidak pernah diganti; widget mendengarkan perubahannya lewat ListenableBuilder.
   @override
   bool updateShouldNotify(AppScope oldWidget) => false;
 }

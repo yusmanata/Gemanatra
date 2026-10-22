@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'dimens.dart';
 
-/// Tema terpusat Material 3 untuk aplikasi Gemanatra.
-/// Menggunakan token dari Dimens dan AppColors secara terpadu tanpa duplikasi nilai.
 class AppTheme {
   AppTheme._();
 
@@ -16,7 +14,7 @@ class AppTheme {
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.background,
 
-      // 1. Color Scheme Dasar
+      // Color Scheme Dasar
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: AppColors.onPrimary,
@@ -27,7 +25,7 @@ class AppTheme {
         error: AppColors.error,
       ),
 
-      // 2. Skala Tipografi Terpusat (TextTheme)
+      // Skala Tipografi Terpusat (TextTheme)
       textTheme: const TextTheme(
         // Untuk angka suhu besar (29°C)
         displayLarge: TextStyle(
@@ -63,7 +61,7 @@ class AppTheme {
           color: AppColors.textPrimary,
           height: 1.6,
         ),
-        // Untuk teks informasi sekunder (kelembapan, waktu, lokasi)
+        // Untuk teks informasi sekunder
         bodyMedium: TextStyle(
           fontSize: 13.0,
           fontWeight: FontWeight.w500,
@@ -76,7 +74,7 @@ class AppTheme {
           fontWeight: FontWeight.w800,
           color: AppColors.onPrimary,
         ),
-        // Untuk label kategori huruf kapital (CUACA HARI INI, TEKNOLOGI)
+        // Untuk label kategori huruf kapital
         labelMedium: TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w800,
@@ -91,7 +89,7 @@ class AppTheme {
         ),
       ),
 
-      // 3. AppBar Theme
+      // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -100,7 +98,7 @@ class AppTheme {
         iconTheme: IconThemeData(color: AppColors.textPrimary),
       ),
 
-      // 4. Card Theme (menggunakan token Dimens.borderRadiusLarge)
+      // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,
@@ -111,7 +109,7 @@ class AppTheme {
         ),
       ),
 
-      // 5. Elevated Button Theme (menggunakan token Dimens.borderRadiusStandard)
+      // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -129,7 +127,7 @@ class AppTheme {
         ),
       ),
 
-      // 6. Outlined Button Theme
+      // Outlined Button Theme
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.textPrimary,
@@ -145,7 +143,7 @@ class AppTheme {
         ),
       ),
 
-      // 7. Chip Theme (menggunakan token Dimens.borderRadiusMedium)
+      // Chip Theme
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surface,
         selectedColor: AppColors.primary,
@@ -164,7 +162,7 @@ class AppTheme {
         ),
       ),
 
-      // 8. Bottom Navigation Bar Theme
+      // Bottom Navigation Bar Theme
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.navBackground,
         elevation: 0,
@@ -178,7 +176,7 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
 
-      // 9. Divider Theme
+      // Divider Theme
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         thickness: 1.0,
