@@ -5,9 +5,11 @@ import '../features/home/home_screen.dart';
 import '../features/main/main_shell.dart';
 import '../features/news_detail/news_detail_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/splash/splash_screen.dart';
 
 /// Semua path aplikasi; jangan menulis string path langsung di widget.
 abstract final class AppRoutes {
+  static const splash = '/splash';
   static const home = '/';
   static const favorites = '/favorites';
   static const settings = '/settings';
@@ -16,7 +18,12 @@ abstract final class AppRoutes {
 }
 
 GoRouter createRouter() => GoRouter(
+  initialLocation: AppRoutes.splash,
   routes: [
+    GoRoute(
+      path: AppRoutes.splash,
+      builder: (context, state) => const SplashScreen(),
+    ),
     // Tiga tab; state tiap tab dipertahankan saat berpindah.
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) =>
