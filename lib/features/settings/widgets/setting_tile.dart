@@ -28,27 +28,26 @@ class SettingTile extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: dimens.spacingSmall),
         child: Row(
+          spacing: dimens.spacingSmall,
           children: [
             Expanded(
               flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
+                spacing: dimens.spacingXSmall,
                 children: [
                   Text(
                     title,
                     style: textTheme.titleSmall,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (subtitle != null) ...[
-                    SizedBox(height: dimens.spacingXSmall),
+                  if (subtitle != null)
                     Text(subtitle!, style: textTheme.bodyMedium),
-                  ],
                 ],
               ),
             ),
-            if (trailing != null) ...[
-              SizedBox(width: dimens.spacingSmall),
+            if (trailing != null)
               Flexible(
                 flex: 2,
                 child: Align(
@@ -56,7 +55,6 @@ class SettingTile extends StatelessWidget {
                   child: trailing!,
                 ),
               ),
-            ],
           ],
         ),
       ),

@@ -42,6 +42,7 @@ class FavoritesScreen extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: dimens.spacingMedium,
                     children: [
                       Semantics(
                         header: true,
@@ -50,7 +51,6 @@ class FavoritesScreen extends StatelessWidget {
                           style: textTheme.titleMedium,
                         ),
                       ),
-                      SizedBox(height: dimens.spacingMediumSmall),
                       for (final item in favorites) ...[
                         NewsCard(
                           key: ValueKey(item.id),
@@ -60,7 +60,6 @@ class FavoritesScreen extends StatelessWidget {
                           onTap: () =>
                               context.push(AppRoutes.newsDetail(item.id)),
                         ),
-                        SizedBox(height: dimens.spacingMedium),
                       ],
                     ],
                   ),

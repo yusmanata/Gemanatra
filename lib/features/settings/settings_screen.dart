@@ -34,6 +34,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: dimens.spacingLarge,
                     children: [
                       // 1. Seksi Aksesibilitas Suara
                       SettingSection(
@@ -74,7 +75,6 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: dimens.spacingLarge),
 
                       // 2. Seksi Tampilan & Kontras
                       SettingSection(
@@ -114,7 +114,6 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: dimens.spacingLarge),
 
                       // 3. Seksi Wilayah Cuaca
                       SettingSection(
@@ -146,7 +145,6 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: dimens.spacingLarge),
 
                       // 4. Informasi & Panduan
                       const SettingSection(
@@ -163,7 +161,6 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: dimens.spacingLarge),
                     ],
                   ),
                 );

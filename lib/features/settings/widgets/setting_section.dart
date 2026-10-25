@@ -21,19 +21,19 @@ class SettingSection extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: dimens.spacingMediumSmall,
       children: [
         Semantics(
           header: true,
           child: Row(
+            spacing: dimens.spacingSmall,
             children: [
-              if (icon != null) ...[
+              if (icon != null)
                 Icon(
                   icon,
                   size: dimens.iconSizeMediumSmall,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                SizedBox(width: dimens.spacingSmall),
-              ],
               Expanded(
                 child: Text(
                   title,
@@ -44,7 +44,6 @@ class SettingSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: dimens.spacingMediumSmall),
         Card(
           child: Padding(
             padding: EdgeInsets.symmetric(

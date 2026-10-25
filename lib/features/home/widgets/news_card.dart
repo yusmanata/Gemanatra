@@ -38,9 +38,11 @@ class NewsCard extends StatelessWidget {
             padding: EdgeInsets.all(dimens.cardPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: dimens.spacingMedium,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  spacing: dimens.spacingSmall,
                   children: [
                     Expanded(
                       child: Text(
@@ -49,14 +51,12 @@ class NewsCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(width: dimens.spacingSmall),
                     Text(
                       news.timeAgo,
                       style: textTheme.bodyMedium,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (showFavoriteButton && onFavoriteToggle != null) ...[
-                      SizedBox(width: dimens.spacingSmall),
+                    if (showFavoriteButton && onFavoriteToggle != null)
                       Semantics(
                         label: news.isFavorite
                             ? 'Hapus dari berita favorit'
@@ -83,12 +83,9 @@ class NewsCard extends StatelessWidget {
                               : 'Simpan ke Favorit',
                         ),
                       ),
-                    ],
                   ],
                 ),
-                SizedBox(height: dimens.spacingSmall),
                 Text(news.title, style: textTheme.titleMedium),
-                SizedBox(height: dimens.spacingMediumLarge),
                 ElevatedButton.icon(
                   onPressed: onListen,
                   icon: Icon(

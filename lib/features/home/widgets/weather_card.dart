@@ -28,23 +28,24 @@ class WeatherCard extends StatelessWidget {
           padding: EdgeInsets.all(dimens.cardPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: dimens.spacingMedium,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: dimens.spacingSmall,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
+                    spacing: dimens.spacingSmall,
                     children: [
                       Icon(
                         Icons.wb_sunny_rounded,
                         color: AppColors.primaryDark,
                         size: dimens.iconSizeMediumSmall,
                       ),
-                      SizedBox(width: dimens.spacingSmall),
                       Text('CUACA HARI INI', style: textTheme.labelMedium),
                     ],
                   ),
-                  SizedBox(width: dimens.spacingSmall),
                   Flexible(
                     child: Text(
                       weather.location,
@@ -56,14 +57,14 @@ class WeatherCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: dimens.spacingMediumSmall),
               Row(
+                spacing: dimens.spacingMedium,
                 children: [
                   Text(weather.temperature, style: textTheme.displayLarge),
-                  SizedBox(width: dimens.spacingMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: dimens.spacingTiny,
                       children: [
                         Text(
                           weather.condition,
@@ -72,7 +73,6 @@ class WeatherCard extends StatelessWidget {
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: dimens.spacingTiny),
                         Text(
                           weather.details,
                           style: textTheme.bodyMedium,
@@ -83,7 +83,6 @@ class WeatherCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: dimens.spacingMedium),
               ElevatedButton.icon(
                 onPressed: onListenPressed,
                 icon: Icon(

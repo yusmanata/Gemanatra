@@ -19,6 +19,7 @@ class FavoriteEmptyView extends StatelessWidget {
           padding: EdgeInsets.all(dimens.emptyStatePadding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            spacing: dimens.spacingMedium,
             children: [
               Container(
                 width: dimens.emptyStateContainerSize,
@@ -33,13 +34,11 @@ class FavoriteEmptyView extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
               ),
-              SizedBox(height: dimens.spacingMedium),
               Text(
                 'Belum Ada Berita Favorit',
                 style: textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: dimens.spacingSmall),
               Text(
                 'Simpan berita penting dengan menekan ikon simpan agar dapat Anda dengarkan kembali dengan mudah kapan saja.',
                 style: textTheme.bodyMedium,

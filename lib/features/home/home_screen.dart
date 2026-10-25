@@ -53,19 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: dimens.spacingMedium,
                     children: [
                       WeatherCard(
                         weather: sampleWeather,
                         onListenPressed: _playWeatherVoice,
                       ),
-                      SizedBox(height: dimens.spacingLarge),
                       CategoryChips(
                         categories: _categories,
                         selectedIndex: _selectedCategory,
                         onSelected: (index) =>
                             setState(() => _selectedCategory = index),
                       ),
-                      SizedBox(height: dimens.spacingMedium),
                       Semantics(
                         header: true,
                         child: Text(
@@ -73,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: textTheme.titleMedium,
                         ),
                       ),
-                      SizedBox(height: dimens.spacingMediumSmall),
                       for (final item in filteredNews) ...[
                         NewsCard(
                           key: ValueKey(item.id),
@@ -83,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () =>
                               context.push(AppRoutes.newsDetail(item.id)),
                         ),
-                        SizedBox(height: dimens.spacingMedium),
                       ],
                     ],
                   ),

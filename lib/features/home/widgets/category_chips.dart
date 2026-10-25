@@ -22,12 +22,12 @@ class CategoryChips extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: dimens.spacingMediumSmall,
       children: [
         Semantics(
           header: true,
           child: Text('Kategori Berita', style: textTheme.titleMedium),
         ),
-        SizedBox(height: dimens.spacingMediumSmall),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(

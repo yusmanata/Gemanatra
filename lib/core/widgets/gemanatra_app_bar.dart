@@ -25,6 +25,7 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: Row(
         mainAxisSize: MainAxisSize.min,
+        spacing: dimens.spacingMediumSmall,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(dimens.borderRadiusSmall),
@@ -41,7 +42,6 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          SizedBox(width: dimens.spacingMediumSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +59,9 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
           ),
+          Row(children: [
+            Text("halo bo", style: textTheme.titleMedium),
+          ],)
         ],
       ),
     );

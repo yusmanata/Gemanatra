@@ -111,12 +111,15 @@ class _NewsDetailContent extends StatelessWidget {
     final dimens = Dimens.of(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(
-        horizontal: dimens.paddingScreenHorizontal,
-        vertical: dimens.paddingScreenVertical,
+      padding: EdgeInsets.fromLTRB(
+        dimens.paddingScreenHorizontal,
+        dimens.paddingScreenVertical,
+        dimens.paddingScreenHorizontal,
+        dimens.paddingScreenVertical + dimens.spacingHuge,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: dimens.spacingLarge,
         children: [
           // 1. Spanduk Pemutar Suara Asistif (TTS Audio Player)
           _AudioPlaybackBanner(
@@ -124,18 +127,14 @@ class _NewsDetailContent extends StatelessWidget {
             isPlaying: isPlayingVoice,
             onToggle: onToggleVoice,
           ),
-          SizedBox(height: dimens.spacingLarge),
 
           // 2. Metadata Artikel (Kategori, Waktu, Penulis, Judul)
           _ArticleHeaderSection(news: news),
-          SizedBox(height: dimens.spacingLarge),
 
           const Divider(),
-          SizedBox(height: dimens.spacingLarge),
 
           // 3. Isi Lengkap Artikel
           _ArticleParagraphs(content: news.content),
-          SizedBox(height: dimens.spacingHuge),
         ],
       ),
     );
@@ -169,8 +168,10 @@ class _AudioPlaybackBanner extends StatelessWidget {
           padding: EdgeInsets.all(dimens.cardPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: dimens.spacingMedium,
             children: [
               Row(
+                spacing: dimens.spacingMedium,
                 children: [
                   Container(
                     width: dimens.minTouchTarget,
@@ -191,10 +192,10 @@ class _AudioPlaybackBanner extends StatelessWidget {
                       size: dimens.iconSizeMediumLarge,
                     ),
                   ),
-                  SizedBox(width: dimens.spacingMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: dimens.spacingTiny,
                       children: [
                         Text(
                           isPlaying
@@ -203,7 +204,6 @@ class _AudioPlaybackBanner extends StatelessWidget {
                           style: textTheme.titleMedium,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: dimens.spacingTiny),
                         Text(
                           'Durasi ${news.durationText} • Narasi Bahasa Indonesia',
                           style: textTheme.bodyMedium,
@@ -214,7 +214,6 @@ class _AudioPlaybackBanner extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: dimens.spacingMedium),
               ElevatedButton.icon(
                 onPressed: onToggle,
                 icon: Icon(
@@ -247,8 +246,10 @@ class _ArticleHeaderSection extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: dimens.spacingMedium,
       children: [
         Row(
+          spacing: dimens.spacingMedium,
           children: [
             Container(
               padding: EdgeInsets.symmetric(
@@ -264,7 +265,6 @@ class _ArticleHeaderSection extends StatelessWidget {
                 style: textTheme.labelMedium,
               ),
             ),
-            SizedBox(width: dimens.spacingMedium),
             Expanded(
               child: Text(
                 '${news.timeAgo} • ${news.author}',
@@ -274,7 +274,6 @@ class _ArticleHeaderSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: dimens.spacingMedium),
         Semantics(
           header: true,
           child: Text(news.title, style: textTheme.titleLarge),
@@ -300,11 +299,12 @@ class _ArticleParagraphs extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: dimens.spacingLarge,
       children: [
-        for (var i = 0; i < paragraphs.length; i++) ...[
+        for (final paragraph in paragraphs)
           Semantics(
             child: Text(
-              paragraphs[i].trim(),
+              paragraph.trim(),
               style:
                   textTheme.bodyLarge ??
                   const TextStyle(
@@ -314,8 +314,6 @@ class _ArticleParagraphs extends StatelessWidget {
                   ),
             ),
           ),
-          if (i < paragraphs.length - 1) SizedBox(height: dimens.spacingLarge),
-        ],
       ],
     );
   }
@@ -334,25 +332,23 @@ class _NewsNotFoundView extends StatelessWidget {
         padding: EdgeInsets.all(dimens.emptyStatePadding),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          spacing: dimens.spacingMedium,
           children: [
             Icon(
               Icons.article_outlined,
               size: dimens.iconSizeXLarge,
               color: AppColors.textSecondary,
             ),
-            SizedBox(height: dimens.spacingMedium),
             Text(
               'Berita Tidak Ditemukan',
               style: textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: dimens.spacingSmall),
             Text(
               'Artikel yang Anda tuju mungkin telah dihapus atau tidak tersedia.',
               style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: dimens.spacingLarge),
             OutlinedButton(
               onPressed: () => Navigator.of(context).maybePop(),
               child: const Text('Kembali'),
