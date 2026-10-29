@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 
 import '../../app/router.dart';
 import '../../core/app_scope.dart';
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onListen: () => _playNewsVoice(item.id),
                           onFavoriteToggle: () => news.toggleFavorite(item.id),
                           onTap: () =>
-                              context.push(AppRoutes.newsDetail(item.id)),
+                              Get.toNamed(AppRoutes.newsDetail(item.id)),
                         ),
                       ],
                     ],

@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../favorites/favorites_screen.dart';
+import '../home/home_screen.dart';
+import '../settings/settings_screen.dart';
 
-class MainShell extends StatelessWidget {
-  const MainShell({super.key, required this.navigationShell});
+class MainShell extends StatefulWidget {
+  const MainShell({super.key});
 
-  final StatefulNavigationShell navigationShell;
+  @override
+  State<MainShell> createState() => _MainShellState();
+}
+
+class _MainShellState extends State<MainShell> {
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = navigationShell.currentIndex;
-
     return Scaffold(
-      body: navigationShell,
+      // IndexedStack menjaga state tiap tab (scroll, kategori) saat berpindah.
+      body: IndexedStack(
+        index: _index,
+        // Urutan harus sama dengan urutan items di BottomNavigationBar.
+        children: const [HomeScreen(), FavoritesScreen(), SettingsScreen()],
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: AppColors.border, width: 1.0)),
         ),
         child: BottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: (index) => navigationShell.goBranch(
-            index,
-            initialLocation: index == currentIndex,
-          ),
+          currentIndex: _index,
+          onTap: (index) => setState(() => _index = index),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),

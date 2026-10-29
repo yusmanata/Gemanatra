@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 
 import '../../app/router.dart';
 import '../../core/theme/app_colors.dart';
@@ -22,7 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigateToHome() {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go(AppRoutes.home);
+        // offNamed: splash diganti, jadi tombol kembali tidak membukanya lagi.
+        Get.offNamed(AppRoutes.home);
       }
     });
   }

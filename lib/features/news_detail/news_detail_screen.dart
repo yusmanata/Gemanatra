@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../core/app_scope.dart';
 import '../../core/models/news_item.dart';
@@ -39,7 +40,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   size: dimens.iconSizeMediumLarge,
                   color: AppColors.textPrimary,
                 ),
-                onPressed: () => Navigator.of(context).maybePop(),
+                onPressed: Get.back,
                 tooltip: 'Kembali',
               ),
             ),
@@ -349,10 +350,7 @@ class _NewsNotFoundView extends StatelessWidget {
               style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).maybePop(),
-              child: const Text('Kembali'),
-            ),
+            OutlinedButton(onPressed: Get.back, child: const Text('Kembali')),
           ],
         ),
       ),

@@ -59,9 +59,6 @@ class GemanatraAppBar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
           ),
-          Row(children: [
-            Text("halo bo", style: textTheme.titleMedium),
-          ],)
         ],
       ),
     );

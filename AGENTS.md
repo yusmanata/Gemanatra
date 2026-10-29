@@ -5,16 +5,16 @@ Jika dokumen ini tidak mengatur sesuatu, tiru pola kode yang sudah ada. Jangan m
 
 ## 0. Cara kerja
 - Baca fitur terdekat di `lib/` sebelum menulis, lalu tiru polanya.
-- Jangan menambah package tanpa izin eksplisit user. Package yang dipakai: `go_router`.
+- Jangan menambah package tanpa izin eksplisit user. Package yang dipakai: `get` (hanya untuk navigasi).
 - Setelah menulis kode: jalankan `dart format .` dan `flutter analyze` (harus bersih).
 - Jangan commit sebelum user meminta.
 
 ## 1. Struktur folder
 ```
 lib/
-├── main.dart              # GemanatraApp (Stateful): buat controller global, AppScope, MaterialApp.router
+├── main.dart              # GemanatraApp (Stateful): buat controller global, AppScope, GetMaterialApp
 ├── app/
-│   └── router.dart        # AppRoutes (path) + GoRouter
+│   └── router.dart        # AppRoutes (path) + AppPages (GetPage)
 ├── core/                  # dipakai lintas fitur
 │   ├── app_scope.dart     # InheritedWidget penyedia controller global
 │   ├── data/              # data contoh (const) sampai API tersedia
@@ -44,9 +44,9 @@ lib/
 - Item list yang bisa berubah memakai `ValueKey(item.id)`.
 
 ## 4. Navigasi
-- `go_router`. Semua path ada di `AppRoutes` (`app/router.dart`); jangan menulis string path di widget.
-- Tab utama: `StatefulShellRoute.indexedStack` + `MainShell`. Detail dan halaman penuh: `GoRoute` di luar shell.
-- Pindah halaman: `context.push(AppRoutes.newsDetail(id))`. Parameter lewat path, bukan objek.
+- GetX hanya untuk navigasi (`GetMaterialApp`, `GetPage`). State tetap `ChangeNotifier` + `AppScope`; jangan memakai `.obs`/`Obx`/`GetxController`. Semua path ada di `AppRoutes` (`app/router.dart`); jangan menulis string path di widget.
+- Tab utama: `MainShell` (Stateful) dengan `IndexedStack` dan `_index`. Urutan `children` harus sama dengan urutan `items` bottom bar. Detail dan halaman penuh: `GetPage` terpisah.
+- Pindah halaman: `Get.toNamed(AppRoutes.newsDetail(id))`. Parameter lewat path dan dibaca dengan `Get.parameters['id']`. Ganti halaman: `Get.offNamed`. Kembali: `Get.back()`.
 
 ## 5. Tema & aksesibilitas (aplikasi untuk tunanetra dan low vision)
 - Warna dari `AppColors`, ukuran/spasi dari `Dimens.of(context)`, teks dari `Theme.of(context).textTheme`. Jangan hardcode `Color(...)`, `fontSize`, atau angka padding di widget fitur.
@@ -69,5 +69,6 @@ lib/
 Jika sebuah aturan tidak cocok, agen **harus bertanya ke user** dan menjelaskan alasannya, bukan menyimpang diam-diam. Keputusan yang disetujui dicatat di sini.
 
 ### Keputusan yang disetujui
-- Arsitektur MVVM/Repository/Result/provider ditinggalkan; diganti pola Senada (controller + `AppScope`). `go_router` tetap dipakai untuk routing. Tanpa test. (Disetujui user, 2026-10-20)
+- Arsitektur MVVM/Repository/Result/provider ditinggalkan; diganti pola Senada (controller + `AppScope`). Tanpa test. (Disetujui user, 2026-10-20)
 - Wiring aplikasi ada di `main.dart` (tanpa `app.dart`); `app/` hanya berisi `router.dart`. (Disetujui user, 2026-10-20)
+- Navigasi memakai GetX (`get`), bukan `go_router`, agar sama dengan materi praktikum. State management tidak berubah. (Disetujui user, 2026-10-29)

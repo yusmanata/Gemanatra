@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 
 import 'app/router.dart';
 import 'core/app_scope.dart';
@@ -19,11 +19,9 @@ class GemanatraApp extends StatefulWidget {
 class _GemanatraAppState extends State<GemanatraApp> {
   final _news = NewsController();
   final _settings = SettingsController();
-  late final GoRouter _router = createRouter();
 
   @override
   void dispose() {
-    _router.dispose();
     _settings.dispose();
     _news.dispose();
     super.dispose();
@@ -34,11 +32,12 @@ class _GemanatraAppState extends State<GemanatraApp> {
     return AppScope(
       news: _news,
       settings: _settings,
-      child: MaterialApp.router(
+      child: GetMaterialApp(
         title: 'Gemanatra',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        routerConfig: _router,
+        initialRoute: AppPages.initial,
+        getPages: AppPages.routes,
       ),
     );
   }
