@@ -206,7 +206,7 @@ class _AudioPlaybackBanner extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          'Durasi ${news.durationText} • Narasi Bahasa Indonesia',
+                          'Durasi ${news.durationText}',
                           style: textTheme.bodyMedium,
                           overflow: TextOverflow.ellipsis,
                         ),

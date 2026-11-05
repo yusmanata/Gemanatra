@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'app/router.dart';
 import 'core/app_scope.dart';
 import 'core/theme/app_theme.dart';
+import 'features/home/weather_controller.dart';
 import 'features/news/news_controller.dart';
 import 'features/settings/settings_controller.dart';
 
@@ -18,11 +19,20 @@ class GemanatraApp extends StatefulWidget {
 
 class _GemanatraAppState extends State<GemanatraApp> {
   final _news = NewsController();
+  final _weather = WeatherController();
   final _settings = SettingsController();
+
+  @override
+  void initState() {
+    super.initState();
+    _news.load();
+    _weather.load();
+  }
 
   @override
   void dispose() {
     _settings.dispose();
+    _weather.dispose();
     _news.dispose();
     super.dispose();
   }
@@ -31,6 +41,7 @@ class _GemanatraAppState extends State<GemanatraApp> {
   Widget build(BuildContext context) {
     return AppScope(
       news: _news,
+      weather: _weather,
       settings: _settings,
       child: GetMaterialApp(
         title: 'Gemanatra',

@@ -11,18 +11,22 @@ class WeatherCard extends StatelessWidget {
     required this.onListenPressed,
   });
 
-  final WeatherSummary weather;
+  // null berarti masih memuat: kartu tampil dengan isian sementara agar tata letak tidak melompat.
+  final WeatherSummary? weather;
   final VoidCallback onListenPressed;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final dimens = Dimens.of(context);
+    final summary = weather;
 
     return Semantics(
       container: true,
-      label:
-          'Informasi cuaca hari ini di ${weather.location}: suhu ${weather.temperature}, ${weather.condition}. ${weather.details}',
+      liveRegion: true,
+      label: summary == null
+          ? 'Sedang memuat informasi cuaca'
+          : 'Informasi cuaca hari ini di ${summary.location}: suhu ${summary.temperature}, ${summary.condition}. ${summary.details}',
       child: Card(
         child: Padding(
           padding: EdgeInsets.all(dimens.cardPadding),
@@ -48,7 +52,7 @@ class WeatherCard extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      weather.location,
+                      summary?.location ?? 'Mencari lokasi...',
                       style: textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -60,21 +64,24 @@ class WeatherCard extends StatelessWidget {
               Row(
                 spacing: dimens.spacingMedium,
                 children: [
-                  Text(weather.temperature, style: textTheme.displayLarge),
+                  Text(
+                    summary?.temperature ?? '--°C',
+                    style: textTheme.displayLarge,
+                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: dimens.spacingTiny,
                       children: [
                         Text(
-                          weather.condition,
+                          summary?.condition ?? 'Memuat cuaca...',
                           style: textTheme.titleMedium?.copyWith(
                             color: AppColors.weatherAlert,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          weather.details,
+                          summary?.details ?? 'Mohon tunggu sebentar',
                           style: textTheme.bodyMedium,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -84,7 +91,7 @@ class WeatherCard extends StatelessWidget {
                 ],
               ),
               ElevatedButton.icon(
-                onPressed: onListenPressed,
+                onPressed: summary == null ? null : onListenPressed,
                 icon: Icon(
                   Icons.cloud_outlined,
                   size: dimens.iconSizeMediumLarge,

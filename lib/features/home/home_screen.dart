@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../app/router.dart';
 import '../../core/app_scope.dart';
-import '../../core/data/sample_weather.dart';
+import '../../core/services/news_service.dart';
 import '../../core/theme/dimens.dart';
 import '../../core/widgets/gemanatra_app_bar.dart';
 import 'widgets/category_chips.dart';
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const _categories = ['Semua', 'Nasional', 'Teknologi', 'Kesehatan'];
+  static final _categories = ['Semua', ...NewsService.categories.values];
 
   int _selectedCategory = 0;
 
@@ -30,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final dimens = Dimens.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final news = AppScope.of(context).news;
+    final scope = AppScope.of(context);
+    final news = scope.news;
+    final weather = scope.weather;
 
     return Scaffold(
       appBar: const GemanatraAppBar(),
@@ -40,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: dimens.maxContentWidth),
             child: ListenableBuilder(
-              listenable: news,
+              listenable: Listenable.merge([news, weather]),
               builder: (context, _) {
                 final filteredNews = _selectedCategory == 0
                     ? news.news
@@ -55,10 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     spacing: dimens.spacingMedium,
                     children: [
-                      WeatherCard(
-                        weather: sampleWeather,
-                        onListenPressed: _playWeatherVoice,
-                      ),
+                      if (weather.error != null)
+                        _ErrorView(
+                          message: weather.error!,
+                          onRetry: weather.load,
+                        )
+                      else
+                        WeatherCard(
+                          weather: weather.weather,
+                          onListenPressed: _playWeatherVoice,
+                        ),
                       CategoryChips(
                         categories: _categories,
                         selectedIndex: _selectedCategory,
@@ -72,6 +80,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: textTheme.titleMedium,
                         ),
                       ),
+                      if (news.isLoading)
+                        Center(
+                          child: Semantics(
+                            label: 'Sedang memuat berita',
+                            child: const CircularProgressIndicator(),
+                          ),
+                        )
+                      else if (news.error != null)
+                        _ErrorView(message: news.error!, onRetry: news.load),
                       for (final item in filteredNews) ...[
                         NewsCard(
                           key: ValueKey(item.id),
@@ -89,6 +106,30 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  const _ErrorView({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final dimens = Dimens.of(context);
+
+    return Semantics(
+      liveRegion: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: dimens.spacingMedium,
+        children: [
+          Text(message, style: Theme.of(context).textTheme.bodyLarge),
+          ElevatedButton(onPressed: onRetry, child: const Text('Coba Lagi')),
+        ],
       ),
     );
   }

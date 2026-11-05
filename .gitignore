@@ -52,3 +52,6 @@ app.*.map.json
 IMPLEMENTATION_PLAN.md
 STUDY_GUIDE.md
 STUDY_LIVE_CODING.md
+
+# Berisi API key
+.vscode/launch.json

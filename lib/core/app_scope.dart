@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../features/home/weather_controller.dart';
 import '../features/news/news_controller.dart';
 import '../features/settings/settings_controller.dart';
 
@@ -7,11 +8,13 @@ class AppScope extends InheritedWidget {
   const AppScope({
     super.key,
     required this.news,
+    required this.weather,
     required this.settings,
     required super.child,
   });
 
   final NewsController news;
+  final WeatherController weather;
   final SettingsController settings;
 
   static AppScope of(BuildContext context) {

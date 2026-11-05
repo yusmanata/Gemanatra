@@ -115,38 +115,7 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
 
-                      // 3. Seksi Wilayah Cuaca
-                      SettingSection(
-                        title: 'Preferensi Wilayah Cuaca',
-                        icon: Icons.location_on,
-                        children: [
-                          SettingTile(
-                            title: 'Kota Pemantauan',
-                            subtitle: 'Pilih lokasi utama laporan cuaca harian',
-                            trailing: DropdownButton<String>(
-                              value: settings.selectedCity,
-                              isExpanded: true,
-                              underline: const SizedBox.shrink(),
-                              onChanged: (value) {
-                                if (value != null) {
-                                  settings.setSelectedCity(value);
-                                }
-                              },
-                              items: settings.availableCities.map((city) {
-                                return DropdownMenuItem(
-                                  value: city,
-                                  child: Text(
-                                    city,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // 4. Informasi & Panduan
+                      // 3. Informasi & Panduan
                       const SettingSection(
                         title: 'Panduan Aksesibilitas',
                         icon: Icons.help_outline,

@@ -5,7 +5,7 @@ Jika dokumen ini tidak mengatur sesuatu, tiru pola kode yang sudah ada. Jangan m
 
 ## 0. Cara kerja
 - Baca fitur terdekat di `lib/` sebelum menulis, lalu tiru polanya.
-- Jangan menambah package tanpa izin eksplisit user. Package yang dipakai: `get` (hanya untuk navigasi).
+- Jangan menambah package tanpa izin eksplisit user. Package yang dipakai: `get` (hanya untuk navigasi), `http` (API berita dan cuaca), `geolocator` (lokasi untuk cuaca), `shared_preferences` (penyimpanan favorit).
 - Setelah menulis kode: jalankan `dart format .` dan `flutter analyze` (harus bersih).
 - Jangan commit sebelum user meminta.
 
@@ -19,6 +19,7 @@ lib/
 │   ├── app_scope.dart     # InheritedWidget penyedia controller global
 │   ├── data/              # data contoh (const) sampai API tersedia
 │   ├── models/            # model immutable (copyWith, tanpa setter)
+│   ├── services/          # pemanggilan API (HTTP + parsing), tanpa state
 │   ├── theme/             # app_colors, app_theme, dimens
 │   └── widgets/           # widget bersama
 └── features/<fitur>/
@@ -34,7 +35,7 @@ lib/
 - **Global** (dipakai banyak layar, mis. `NewsController`, `SettingsController`): dibuat di `_GemanatraAppState` (`main.dart`), dipasang di `AppScope`, di-dispose di sana, diakses lewat `AppScope.of(context).news`.
 - **Lokal** (satu layar, mis. `TextEditingController`, `ScrollController`): dibuat di `State` layar itu dan wajib di-dispose di `dispose()`.
 - Controller tidak mengimpor `package:flutter/material.dart`, tidak memegang `BuildContext`.
-- Jangan melempar exception ke UI. Saat API ada, tangkap di controller dan ekspos state error.
+- Jangan melempar exception ke UI. Pemanggilan API ada di `core/services/`; service boleh melempar, controller menangkap dan mengekspos state error.
 
 ## 3. Widget
 - Default **`StatelessWidget`**. Gunakan `StatefulWidget` hanya bila: (a) membuat objek ber-lifecycle (controller, listener, animasi), atau (b) menyimpan state ephemeral satu layar (kategori terpilih, status tampilan).
@@ -72,3 +73,7 @@ Jika sebuah aturan tidak cocok, agen **harus bertanya ke user** dan menjelaskan 
 - Arsitektur MVVM/Repository/Result/provider ditinggalkan; diganti pola Senada (controller + `AppScope`). Tanpa test. (Disetujui user, 2026-10-20)
 - Wiring aplikasi ada di `main.dart` (tanpa `app.dart`); `app/` hanya berisi `router.dart`. (Disetujui user, 2026-10-20)
 - Navigasi memakai GetX (`get`), bukan `go_router`, agar sama dengan materi praktikum. State management tidak berubah. (Disetujui user, 2026-10-29)
+- Pemanggilan API dipisah ke `core/services/` (mis. `NewsService`) agar controller hanya mengurus state; service tanpa state dan tanpa `notifyListeners`. (Disetujui user, 2026-11-04)
+- Package `http` ditambahkan untuk API berita Guardian. (Disetujui user, 2026-11-05)
+- Package `geolocator` ditambahkan untuk cuaca sesuai lokasi perangkat; bila izin ditolak dipakai lokasi default Jakarta dan kartu menyebutnya. (Disetujui user, 2026-11-05)
+- Package `shared_preferences` ditambahkan kembali untuk menyimpan favorit permanen (isi artikel disimpan sebagai JSON); sempat dibatalkan karena pub cache berbeda drive, kini `PUB_CACHE` di D:. (Disetujui user, 2026-11-05)

@@ -24,6 +24,7 @@ class NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final dimens = Dimens.of(context);
+    final hasFavoriteButton = showFavoriteButton && onFavoriteToggle != null;
 
     return Semantics(
       container: true,
@@ -35,7 +36,13 @@ class NewsCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(dimens.borderRadiusLarge),
           child: Padding(
-            padding: EdgeInsets.all(dimens.cardPadding),
+            // Tombol favorit setinggi target sentuh sudah memberi jarak atas.
+            padding: EdgeInsets.fromLTRB(
+              dimens.cardPadding,
+              hasFavoriteButton ? 0 : dimens.cardPadding,
+              dimens.cardPadding,
+              dimens.cardPadding,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: dimens.spacingMedium,
@@ -56,7 +63,7 @@ class NewsCard extends StatelessWidget {
                       style: textTheme.bodyMedium,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (showFavoriteButton && onFavoriteToggle != null)
+                    if (hasFavoriteButton)
                       Semantics(
                         label: news.isFavorite
                             ? 'Hapus dari berita favorit'
